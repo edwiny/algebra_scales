@@ -2,7 +2,14 @@ import Scale from './Scale'
 import StorageArea from './StorageArea'
 import './Workspace.css'
 
-function Workspace({ equationState, setEquationState, solution }) {
+function Workspace({
+  equationState,
+  setEquationState,
+  solution,
+  storage,
+  takeFromStorage,
+  returnToStorage
+}) {
   return (
     <div className="workspace">
       <Scale
@@ -10,8 +17,16 @@ function Workspace({ equationState, setEquationState, solution }) {
         rightSide={equationState.rightSide}
         setEquationState={setEquationState}
         solution={solution}
+        returnToStorage={returnToStorage}
+        takeFromStorage={takeFromStorage}
       />
-      <StorageArea />
+      <StorageArea
+        storage={storage}
+        takeFromStorage={takeFromStorage}
+        setEquationState={setEquationState}
+        equationState={equationState}
+        returnToStorage={returnToStorage}
+      />
     </div>
   )
 }

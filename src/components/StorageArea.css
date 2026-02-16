@@ -57,6 +57,47 @@
   align-items: center;
 }
 
+.storage-slot {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.storage-slot.empty {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.storage-slot.empty.drag-over {
+  border-color: rgba(100, 108, 255, 0.6);
+  background: rgba(100, 108, 255, 0.1);
+  border-style: solid;
+  box-shadow: 0 0 15px rgba(100, 108, 255, 0.3);
+}
+
+.storage-slot > div {
+  cursor: grab;
+}
+
+.storage-slot > div:active {
+  cursor: grabbing;
+}
+
+.empty-slot-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .storage-sections {

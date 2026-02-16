@@ -3,7 +3,7 @@ import Weight from './Weight'
 import Balloon from './Balloon'
 import './Scale.css'
 
-function Scale({ leftSide, rightSide, setEquationState, solution }) {
+function Scale({ leftSide, rightSide, setEquationState, solution, returnToStorage, takeFromStorage }) {
   const balance = calculateBalance(leftSide, rightSide, solution)
 
   // Handle removing an item from left side
@@ -22,21 +22,45 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
     }))
   }
 
+  // Handle drag start from scale item (to return to storage)
+  const handleScaleItemDragStart = (e, itemType, side) => {
+    e.stopPropagation()
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('itemType', itemType)
+    e.dataTransfer.setData('itemValue', itemType === 'weight' ? '1' : '-1')
+    e.dataTransfer.setData('fromStorage', 'false') // Mark as from scales
+    e.dataTransfer.setData('fromSide', side) // Track which side (left or right)
+  }
+
+  const handleScaleItemDragEnd = (e) => {
+    // Visual feedback can be added here if needed
+  }
+
   // Handle drop on left side
   const handleDropLeft = (e) => {
     e.preventDefault()
     const itemType = e.dataTransfer.getData('itemType')
     const itemValue = parseInt(e.dataTransfer.getData('itemValue'), 10)
+    const fromStorage = e.dataTransfer.getData('fromStorage')
 
-    const newItem = {
-      type: itemType,
-      value: itemValue
+    // Only add items that come from storage, not from scales
+    if (fromStorage === 'true') {
+      const newItem = {
+        type: itemType,
+        value: itemValue
+      }
+
+      // Remove from storage
+      if (takeFromStorage) {
+        takeFromStorage(itemType)
+      }
+
+      // Add to scales
+      setEquationState(prev => ({
+        ...prev,
+        leftSide: [...prev.leftSide, newItem]
+      }))
     }
-
-    setEquationState(prev => ({
-      ...prev,
-      leftSide: [...prev.leftSide, newItem]
-    }))
 
     e.currentTarget.classList.remove('drag-over')
   }
@@ -46,16 +70,26 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
     e.preventDefault()
     const itemType = e.dataTransfer.getData('itemType')
     const itemValue = parseInt(e.dataTransfer.getData('itemValue'), 10)
+    const fromStorage = e.dataTransfer.getData('fromStorage')
 
-    const newItem = {
-      type: itemType,
-      value: itemValue
+    // Only add items that come from storage, not from scales
+    if (fromStorage === 'true') {
+      const newItem = {
+        type: itemType,
+        value: itemValue
+      }
+
+      // Remove from storage
+      if (takeFromStorage) {
+        takeFromStorage(itemType)
+      }
+
+      // Add to scales
+      setEquationState(prev => ({
+        ...prev,
+        rightSide: [...prev.rightSide, newItem]
+      }))
     }
-
-    setEquationState(prev => ({
-      ...prev,
-      rightSide: [...prev.rightSide, newItem]
-    }))
 
     e.currentTarget.classList.remove('drag-over')
   }
@@ -88,7 +122,7 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
         <span>Balance: {balance === 0 ? '⚖️ Balanced' : balance > 0 ? '↘️ Right heavier' : '↖️ Left heavier'}</span>
       </div>
       <div className="scale-instruction">
-        Click on any item to remove it from the scale
+        Click items to remove, or drag them back to empty storage slots
       </div>
 
       <div className="scale">
@@ -105,8 +139,11 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
                 <div
                   key={item.key}
                   className="removable-item"
+                  draggable={true}
+                  onDragStart={(e) => handleScaleItemDragStart(e, item.type, 'left')}
+                  onDragEnd={handleScaleItemDragEnd}
                   onClick={() => handleRemoveFromLeft(item.index)}
-                  title="Click to remove"
+                  title="Click to remove or drag back to storage"
                 >
                   <Weight value={item.value} />
                 </div>
@@ -114,8 +151,11 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
                 <div
                   key={item.key}
                   className="removable-item"
+                  draggable={true}
+                  onDragStart={(e) => handleScaleItemDragStart(e, item.type, 'left')}
+                  onDragEnd={handleScaleItemDragEnd}
                   onClick={() => handleRemoveFromLeft(item.index)}
-                  title="Click to remove"
+                  title="Click to remove or drag back to storage"
                 >
                   <Balloon value={item.value} />
                 </div>
@@ -151,8 +191,11 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
                 <div
                   key={item.key}
                   className="removable-item"
+                  draggable={true}
+                  onDragStart={(e) => handleScaleItemDragStart(e, item.type, 'right')}
+                  onDragEnd={handleScaleItemDragEnd}
                   onClick={() => handleRemoveFromRight(item.index)}
-                  title="Click to remove"
+                  title="Click to remove or drag back to storage"
                 >
                   <Weight value={item.value} />
                 </div>
@@ -160,8 +203,11 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
                 <div
                   key={item.key}
                   className="removable-item"
+                  draggable={true}
+                  onDragStart={(e) => handleScaleItemDragStart(e, item.type, 'right')}
+                  onDragEnd={handleScaleItemDragEnd}
                   onClick={() => handleRemoveFromRight(item.index)}
-                  title="Click to remove"
+                  title="Click to remove or drag back to storage"
                 >
                   <Balloon value={item.value} />
                 </div>
