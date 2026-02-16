@@ -10,18 +10,37 @@
 function sideToExpression(items) {
   if (items.length === 0) return '0'
 
-  const terms = []
+  // Aggregate items by type and sum their values
+  let unknownCount = 0
+  let weightSum = 0
+  let balloonSum = 0
 
   items.forEach(item => {
     if (item.type === 'weight') {
-      terms.push({ value: item.value, isNegative: false })
+      weightSum += item.value
     } else if (item.type === 'balloon') {
-      // Balloons represent negative values
-      terms.push({ value: Math.abs(item.value), isNegative: true })
+      balloonSum += Math.abs(item.value)
     } else if (item.type === 'unknown') {
-      terms.push({ value: 'x', isNegative: false })
+      unknownCount += item.value
     }
   })
+
+  const terms = []
+
+  // Add unknown term if present
+  if (unknownCount > 0) {
+    terms.push({ value: unknownCount === 1 ? 'x' : `${unknownCount}x`, isNegative: false })
+  }
+
+  // Add weight sum if present
+  if (weightSum > 0) {
+    terms.push({ value: weightSum, isNegative: false })
+  }
+
+  // Add balloon sum if present (as negative)
+  if (balloonSum > 0) {
+    terms.push({ value: balloonSum, isNegative: true })
+  }
 
   if (terms.length === 0) return '0'
 
