@@ -1,0 +1,43 @@
+.weight {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.weight.draggable {
+  cursor: grab;
+}
+
+.weight.draggable:active {
+  cursor: grabbing;
+}
+
+.weight.draggable:hover .weight-body {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.6);
+}
+
+.weight-body {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.4),
+              inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.weight:hover .weight-body {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(59, 130, 246, 0.5);
+}
+
+.weight-value {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9em;
+}

@@ -1,0 +1,23 @@
+.equation-display {
+  background: rgba(100, 108, 255, 0.1);
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.equation-label {
+  font-size: 0.9em;
+  color: #a0aec0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.equation-text {
+  font-size: 1.8em;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #646cff;
+  letter-spacing: 2px;
+}
