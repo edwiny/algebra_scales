@@ -88,3 +88,40 @@ export function solveForX(leftSide, rightSide) {
 
   return null // Can't solve yet
 }
+
+/**
+ * Check if the equation has been solved correctly (victory condition)
+ * Victory conditions:
+ * 1. x is isolated on one side (only unknown items on that side)
+ * 2. The other side's value matches the expected solution
+ * 3. The scales are balanced
+ *
+ * @param {Array} leftSide - Items on left side
+ * @param {Array} rightSide - Items on right side
+ * @param {number} expectedSolution - The correct value of x
+ * @returns {boolean} True if equation is solved correctly
+ */
+export function checkVictoryCondition(leftSide, rightSide, expectedSolution) {
+  const leftUnknowns = countItemsByType(leftSide, 'unknown')
+  const rightUnknowns = countItemsByType(rightSide, 'unknown')
+
+  // Check if x is isolated on exactly one side
+  const isIsolatedOnLeft = leftUnknowns >= 1 && rightUnknowns === 0 &&
+                           leftSide.length === leftUnknowns
+  const isIsolatedOnRight = rightUnknowns >= 1 && leftUnknowns === 0 &&
+                            rightSide.length === rightUnknowns
+
+  if (!isIsolatedOnLeft && !isIsolatedOnRight) {
+    return false // x is not isolated
+  }
+
+  // Calculate the value of x
+  const calculatedX = solveForX(leftSide, rightSide)
+
+  if (calculatedX === null) {
+    return false // Can't solve
+  }
+
+  // Check if calculated value matches expected solution
+  return calculatedX === expectedSolution
+}

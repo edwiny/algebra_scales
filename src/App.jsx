@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import Workspace from './components/Workspace'
 import EquationDisplay from './components/EquationDisplay'
+import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
 import { STORAGE_CONFIG } from './config/constants'
+import { checkVictoryCondition } from './utils/balanceLogic'
 import './App.css'
 
 function App() {
@@ -18,8 +20,14 @@ function App() {
     balloons: Array(STORAGE_CONFIG.BALLOONS_CAPACITY).fill(true),
   })
 
+  // Victory state
+  const [isVictory, setIsVictory] = useState(false)
+
   // Initialize equation and storage
   const initializeEquation = (equation) => {
+    // Reset victory state
+    setIsVictory(false)
+
     // Reset storage to full
     const newStorage = {
       weights: Array(STORAGE_CONFIG.WEIGHTS_CAPACITY).fill(true),
@@ -51,6 +59,16 @@ function App() {
     initializeEquation(activeEquation)
   }, [])
 
+  // Check for victory condition whenever equation state changes
+  useEffect(() => {
+    const victory = checkVictoryCondition(
+      equationState.leftSide,
+      equationState.rightSide,
+      activeEquation.solution
+    )
+    setIsVictory(victory)
+  }, [equationState, activeEquation.solution])
+
   const handleEquationChange = (equationId) => {
     const newEquation = equations.find(eq => eq.id === equationId)
     if (newEquation) {
@@ -61,6 +79,19 @@ function App() {
 
   const handleReset = () => {
     initializeEquation(activeEquation)
+  }
+
+  const handleNextEquation = () => {
+    const currentIndex = equations.findIndex(eq => eq.id === activeEquation.id)
+    if (currentIndex < equations.length - 1) {
+      const nextEquation = equations[currentIndex + 1]
+      setActiveEquation(nextEquation)
+      initializeEquation(nextEquation)
+    }
+  }
+
+  const handleCloseVictory = () => {
+    setIsVictory(false)
   }
 
   // Handle taking item from storage
@@ -130,6 +161,17 @@ function App() {
       <footer>
         <p>Visualize equations as balanced scales</p>
       </footer>
+
+      <VictoryModal
+        isVisible={isVictory}
+        solution={activeEquation.solution}
+        onNextEquation={handleNextEquation}
+        onReset={handleReset}
+        onClose={handleCloseVictory}
+        hasNextEquation={
+          equations.findIndex(eq => eq.id === activeEquation.id) < equations.length - 1
+        }
+      />
     </div>
   )
 }
