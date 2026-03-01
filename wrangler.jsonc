@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
 
   // Worker identity
-  "name": "mathslay-release-build",
+  "name": "mathslay",
   "compatibility_date": "2026-03-01",
 
   // Build step: runs before deploying
