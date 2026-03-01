@@ -124,6 +124,13 @@
   transform: translateY(0);
 }
 
+.reset-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .App {

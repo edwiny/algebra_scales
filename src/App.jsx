@@ -3,7 +3,6 @@ import Workspace from './components/Workspace'
 import EquationDisplay from './components/EquationDisplay'
 import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
-import { STORAGE_CONFIG } from './config/constants'
 import { checkVictoryCondition } from './utils/balanceLogic'
 import './App.css'
 
@@ -14,43 +13,17 @@ function App() {
     rightSide: [],
   })
 
-  // Storage state: array of slots, each with filled status
-  const [storage, setStorage] = useState({
-    weights: Array(STORAGE_CONFIG.WEIGHTS_CAPACITY).fill(true),
-    balloons: Array(STORAGE_CONFIG.BALLOONS_CAPACITY).fill(true),
-  })
-
   // Victory state
   const [isVictory, setIsVictory] = useState(false)
 
   // Loading state
   const [isLoading, setIsLoading] = useState(true)
 
-  // Initialize equation and storage
+  // Initialize equation
   const initializeEquation = (equation) => {
     // Reset victory state
     setIsVictory(false)
 
-    // Reset storage to full
-    const newStorage = {
-      weights: Array(STORAGE_CONFIG.WEIGHTS_CAPACITY).fill(true),
-      balloons: Array(STORAGE_CONFIG.BALLOONS_CAPACITY).fill(true),
-    }
-
-    // Count items needed from equation
-    const allItems = [...equation.leftSide, ...equation.rightSide]
-    const weightsNeeded = allItems.filter(item => item.type === 'weight').length
-    const balloonsNeeded = allItems.filter(item => item.type === 'balloon').length
-
-    // Remove items from storage
-    for (let i = 0; i < weightsNeeded && i < newStorage.weights.length; i++) {
-      newStorage.weights[i] = false
-    }
-    for (let i = 0; i < balloonsNeeded && i < newStorage.balloons.length; i++) {
-      newStorage.balloons[i] = false
-    }
-
-    setStorage(newStorage)
     setEquationState({
       leftSide: equation.leftSide,
       rightSide: equation.rightSide,
@@ -99,32 +72,7 @@ function App() {
     setIsVictory(false)
   }
 
-  // Handle taking item from storage
-  const takeFromStorage = (itemType) => {
-    setStorage(prev => {
-      const storageKey = itemType === 'weight' ? 'weights' : 'balloons'
-      const newStorage = { ...prev }
-      const firstFilledIndex = newStorage[storageKey].findIndex(slot => slot === true)
 
-      if (firstFilledIndex !== -1) {
-        newStorage[storageKey] = [...newStorage[storageKey]]
-        newStorage[storageKey][firstFilledIndex] = false
-      }
-
-      return newStorage
-    })
-  }
-
-  // Handle returning item to storage
-  const returnToStorage = (itemType, slotIndex) => {
-    setStorage(prev => {
-      const storageKey = itemType === 'weight' ? 'weights' : 'balloons'
-      const newStorage = { ...prev }
-      newStorage[storageKey] = [...newStorage[storageKey]]
-      newStorage[storageKey][slotIndex] = true
-      return newStorage
-    })
-  }
 
   return (
     <div className="App">
@@ -149,14 +97,6 @@ function App() {
               </option>
             ))}
           </select>
-          <button
-            onClick={handleReset}
-            className="reset-button"
-            aria-label="Reset the current equation to its initial state"
-            disabled={isLoading}
-          >
-            Reset Equation
-          </button>
           <div id="equation-description" className="sr-only">
             Select an algebraic equation to practice balancing scales with weights and balloons
           </div>
@@ -167,10 +107,18 @@ function App() {
           equationState={equationState}
           setEquationState={setEquationState}
           solution={activeEquation.solution}
-          storage={storage}
-          takeFromStorage={takeFromStorage}
-          returnToStorage={returnToStorage}
         />
+
+        <div className="reset-section">
+          <button
+            onClick={handleReset}
+            className="reset-button"
+            aria-label="Reset the current equation to its initial state"
+            disabled={isLoading}
+          >
+            Reset Equation
+          </button>
+        </div>
       </main>
 
       <footer>

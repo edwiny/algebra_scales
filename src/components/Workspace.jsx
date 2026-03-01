@@ -1,14 +1,11 @@
 import Scale from './Scale'
-import StorageArea from './StorageArea'
+import ControlPanel from './ControlPanel'
 import './Workspace.css'
 
 function Workspace({
   equationState,
   setEquationState,
-  solution,
-  storage,
-  takeFromStorage,
-  returnToStorage
+  solution
 }) {
   return (
     <div className="workspace">
@@ -17,15 +14,9 @@ function Workspace({
         rightSide={equationState.rightSide}
         setEquationState={setEquationState}
         solution={solution}
-        returnToStorage={returnToStorage}
-        takeFromStorage={takeFromStorage}
       />
-      <StorageArea
-        storage={storage}
-        takeFromStorage={takeFromStorage}
+      <ControlPanel
         setEquationState={setEquationState}
-        equationState={equationState}
-        returnToStorage={returnToStorage}
       />
     </div>
   )
