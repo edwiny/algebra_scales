@@ -23,6 +23,9 @@ function App() {
   // Victory state
   const [isVictory, setIsVictory] = useState(false)
 
+  // Loading state
+  const [isLoading, setIsLoading] = useState(true)
+
   // Initialize equation and storage
   const initializeEquation = (equation) => {
     // Reset victory state
@@ -57,6 +60,8 @@ function App() {
   // Initialize on mount
   useEffect(() => {
     initializeEquation(activeEquation)
+    // Simulate loading time for better UX
+    setTimeout(() => setIsLoading(false), 500)
   }, [])
 
   // Check for victory condition whenever equation state changes
@@ -135,6 +140,8 @@ function App() {
             id="equation-select"
             value={activeEquation.id}
             onChange={(e) => handleEquationChange(Number(e.target.value))}
+            aria-describedby="equation-description"
+            disabled={isLoading}
           >
             {equations.map((eq) => (
               <option key={eq.id} value={eq.id}>
@@ -142,9 +149,17 @@ function App() {
               </option>
             ))}
           </select>
-          <button onClick={handleReset} className="reset-button">
+          <button
+            onClick={handleReset}
+            className="reset-button"
+            aria-label="Reset the current equation to its initial state"
+            disabled={isLoading}
+          >
             Reset Equation
           </button>
+          <div id="equation-description" className="sr-only">
+            Select an algebraic equation to practice balancing scales with weights and balloons
+          </div>
         </div>
 
         <EquationDisplay equationState={equationState} />
@@ -161,6 +176,13 @@ function App() {
       <footer>
         <p>Visualize equations as balanced scales</p>
       </footer>
+
+      {isLoading && (
+        <div className="loading-overlay" aria-live="polite" aria-label="Loading algebra scales application">
+          <div className="loading-spinner" aria-hidden="true"></div>
+          <p>Loading scales...</p>
+        </div>
+      )}
 
       <VictoryModal
         isVisible={isVictory}
