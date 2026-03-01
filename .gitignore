@@ -26,3 +26,7 @@ dist/
 
 # node
 .node-version
+
+.agents
+.claude
+skills-lock.json
