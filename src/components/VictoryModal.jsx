@@ -11,7 +11,6 @@ function VictoryModal({
   if (!isVisible) return null
 
   const handleOverlayClick = (e) => {
-    // Close modal if clicking on overlay (not the card)
     if (e.target === e.currentTarget) {
       onClose()
     }
@@ -32,18 +31,18 @@ function VictoryModal({
           onClick={onClose}
           aria-label="Close victory modal"
         >
-          ×
+          Close
         </button>
 
-        <div className="victory-celebration" aria-hidden="true">
-          🎉
-        </div>
+        <div className="victory-badge" aria-hidden="true">Solved</div>
 
-        <h2 id="victory-title" className="victory-title">Equation Solved!</h2>
+        <h2 id="victory-title" className="victory-title">Nice work.</h2>
 
         <div id="victory-message" className="victory-message">
           You found that <strong>x = {solution}</strong>
         </div>
+
+        <p className="victory-note">Reset to practice again or move on when you feel ready.</p>
 
         <div className="victory-actions" role="group" aria-label="Victory actions">
           {hasNextEquation && (
@@ -52,7 +51,7 @@ function VictoryModal({
               onClick={onNextEquation}
               aria-label="Move to the next algebra equation"
             >
-              Try Next Equation →
+              Next equation
             </button>
           )}
           <button
@@ -60,7 +59,7 @@ function VictoryModal({
             onClick={onReset}
             aria-label="Reset the current equation to try again"
           >
-            Reset This Equation
+            Try this one again
           </button>
         </div>
       </div>

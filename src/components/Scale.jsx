@@ -5,123 +5,135 @@ import './Scale.css'
 
 function Scale({ leftSide, rightSide, setEquationState, solution }) {
   const balance = calculateBalance(leftSide, rightSide, solution)
+  const balanceTilt = Math.max(-100, Math.min(100, balance * 20))
 
-  // Handle removing an item from left side
-  const handleRemoveFromLeft = (indexToRemove) => {
-    setEquationState(prev => ({
+  const handleRemove = (side, indexToRemove) => {
+    setEquationState((prev) => ({
       ...prev,
-      leftSide: prev.leftSide.filter((_, index) => index !== indexToRemove)
+      [side]: prev[side].filter((_, index) => index !== indexToRemove)
     }))
   }
 
-  // Handle removing an item from right side
-  const handleRemoveFromRight = (indexToRemove) => {
-    setEquationState(prev => ({
-      ...prev,
-      rightSide: prev.rightSide.filter((_, index) => index !== indexToRemove)
-    }))
-  }
-
-
-
-  // Helper function to render items (now they're already individual units in state)
-  const renderItems = (items) => {
+  const renderItems = (items, side) => {
     return items.map((item, index) => ({
       ...item,
-      key: `${item.type}-${index}`,
-      index: index
+      side,
+      key: `${side}-${item.type}-${index}`,
+      index,
     }))
   }
 
-  const leftItems = renderItems(leftSide)
-  const rightItems = renderItems(rightSide)
+  const renderItemVisual = (item) => {
+    if (item.type === 'weight') {
+      return <Weight value={item.value} />
+    }
+
+    if (item.type === 'balloon') {
+      return <Balloon value={item.value} />
+    }
+
+    return (
+      <div className="unknown-triangle" aria-hidden="true">
+        <span>x</span>
+      </div>
+    )
+  }
+
+  const leftItems = renderItems(leftSide, 'leftSide')
+  const rightItems = renderItems(rightSide, 'rightSide')
+  const balanceMessage = balance === 0
+    ? 'Balanced'
+    : balance > 0
+      ? 'Left side is heavier'
+      : 'Right side is heavier'
 
   return (
-    <div className="scale-container">
-      <div className="balance-indicator">
-        <span>Can you solve X? Tip: get it all by itself on one side of the scales.</span>
-      </div>
-      <div className="scale-instruction">
-        Click items to remove them
+    <section className="scale-container" aria-label="Balance scale workspace">
+      <div className="scale-topper">
+        <div>
+          <p className="balance-indicator">Goal: get x by itself on one side.</p>
+          <p className="scale-instruction">Tap the small remove button under an item to take one away.</p>
+        </div>
+
+        <div className="balance-status" aria-live="polite">
+          <span className="balance-status-label">Scale check</span>
+          <strong>{balanceMessage}</strong>
+        </div>
       </div>
 
-      <div className="scale">
-        <div className="scale-side left-side">
-          <div className="side-label">Left Side</div>
+      <div className="beam-meter" aria-hidden="true">
+        <div className="beam-meter-track">
+          <div className="beam-meter-indicator" style={{ transform: `translateX(${balanceTilt}%)` }} />
+        </div>
+      </div>
+
+      <div className="scale-sides">
+        <section className="scale-side left-side" aria-label="Left side of the scale">
+          <div className="side-heading">
+            <div>
+              <div className="side-label">Left side</div>
+              <div className="side-count">{leftItems.length} item{leftItems.length === 1 ? '' : 's'}</div>
+            </div>
+          </div>
+
           <div className="items-container">
+            {leftItems.length === 0 && <div className="empty-placeholder">Nothing here yet</div>}
             {leftItems.map((item) => (
-              item.type === 'weight' ? (
-                <div
-                  key={item.key}
-                  className="removable-item"
-                  onClick={() => handleRemoveFromLeft(item.index)}
-                  title="Click to remove"
-                >
-                  <Weight value={item.value} />
-                </div>
-              ) : item.type === 'balloon' ? (
-                <div
-                  key={item.key}
-                  className="removable-item"
-                  onClick={() => handleRemoveFromLeft(item.index)}
-                  title="Click to remove"
-                >
-                  <Balloon value={item.value} />
-                </div>
-              ) : item.type === 'unknown' ? (
-                <div key={item.key} className="unknown-triangle">
-                  <span>x</span>
-                </div>
-              ) : null
+              <div key={item.key} className="item-chip">
+                {renderItemVisual(item)}
+                {item.type !== 'unknown' ? (
+                  <button
+                    type="button"
+                    className="remove-item-button"
+                    onClick={() => handleRemove(item.side, item.index)}
+                    aria-label={`Remove one ${item.type} from the left side`}
+                  >
+                    Remove
+                  </button>
+                ) : (
+                  <span className="item-chip-label">Unknown</span>
+                )}
+              </div>
             ))}
-            {leftItems.length === 0 && (
-              <div className="empty-placeholder">Drop items here</div>
-            )}
           </div>
+        </section>
+
+        <div className="fulcrum" aria-hidden="true">
+          <div className="beam" style={{ transform: `rotate(${Math.max(-12, Math.min(12, balance * 5))}deg)` }} />
+          <div className="pivot"></div>
         </div>
 
-        <div className="fulcrum">
-          <div className="beam" style={{
-            transform: `rotate(${Math.max(-15, Math.min(15, balance * 5))}deg)`
-          }} />
-          <div className="pivot">△</div>
-        </div>
+        <section className="scale-side right-side" aria-label="Right side of the scale">
+          <div className="side-heading">
+            <div>
+              <div className="side-label">Right side</div>
+              <div className="side-count">{rightItems.length} item{rightItems.length === 1 ? '' : 's'}</div>
+            </div>
+          </div>
 
-        <div className="scale-side right-side">
-          <div className="side-label">Right Side</div>
           <div className="items-container">
+            {rightItems.length === 0 && <div className="empty-placeholder">Nothing here yet</div>}
             {rightItems.map((item) => (
-              item.type === 'weight' ? (
-                <div
-                  key={item.key}
-                  className="removable-item"
-                  onClick={() => handleRemoveFromRight(item.index)}
-                  title="Click to remove"
-                >
-                  <Weight value={item.value} />
-                </div>
-              ) : item.type === 'balloon' ? (
-                <div
-                  key={item.key}
-                  className="removable-item"
-                  onClick={() => handleRemoveFromRight(item.index)}
-                  title="Click to remove"
-                >
-                  <Balloon value={item.value} />
-                </div>
-              ) : item.type === 'unknown' ? (
-                <div key={item.key} className="unknown-triangle">
-                  <span>x</span>
-                </div>
-              ) : null
+              <div key={item.key} className="item-chip">
+                {renderItemVisual(item)}
+                {item.type !== 'unknown' ? (
+                  <button
+                    type="button"
+                    className="remove-item-button"
+                    onClick={() => handleRemove(item.side, item.index)}
+                    aria-label={`Remove one ${item.type} from the right side`}
+                  >
+                    Remove
+                  </button>
+                ) : (
+                  <span className="item-chip-label">Unknown</span>
+                )}
+              </div>
             ))}
-            {rightItems.length === 0 && (
-              <div className="empty-placeholder">Drop items here</div>
-            )}
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </section>
   )
 }
 

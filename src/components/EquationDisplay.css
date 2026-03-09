@@ -1,23 +1,30 @@
 .equation-display {
-  background: rgba(100, 108, 255, 0.1);
-  border: 2px solid rgba(100, 108, 255, 0.3);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  text-align: center;
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--panel-strong);
+  border: 1px solid rgba(127, 184, 200, 0.28);
+  border-radius: 1.4rem;
+  box-shadow: var(--shadow-soft);
 }
 
 .equation-label {
-  font-size: 0.9em;
-  color: #a0aec0;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
 }
 
 .equation-text {
-  font-size: 1.8em;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  color: #646cff;
-  letter-spacing: 2px;
+  font-size: clamp(1.4rem, 5vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+.equation-helper {
+  font-size: 0.92rem;
+  color: var(--text-soft);
 }

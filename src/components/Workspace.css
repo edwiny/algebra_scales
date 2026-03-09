@@ -1,12 +1,17 @@
 .workspace {
   width: 100%;
-  min-height: 400px;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 2rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(255, 248, 240, 0.96) 0%, rgba(247, 239, 232, 0.96) 100%);
+  border: 1px solid var(--border-soft);
+  border-radius: 1.6rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@media (min-width: 900px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.95fr);
+    align-items: start;
+  }
 }

@@ -12,16 +12,9 @@ function App() {
     leftSide: [],
     rightSide: [],
   })
-
-  // Victory state
   const [isVictory, setIsVictory] = useState(false)
 
-  // Loading state
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Initialize equation
   const initializeEquation = (equation) => {
-    // Reset victory state
     setIsVictory(false)
 
     setEquationState({
@@ -30,14 +23,10 @@ function App() {
     })
   }
 
-  // Initialize on mount
   useEffect(() => {
     initializeEquation(activeEquation)
-    // Simulate loading time for better UX
-    setTimeout(() => setIsLoading(false), 500)
   }, [])
 
-  // Check for victory condition whenever equation state changes
   useEffect(() => {
     const victory = checkVictoryCondition(
       equationState.leftSide,
@@ -48,7 +37,7 @@ function App() {
   }, [equationState, activeEquation.solution])
 
   const handleEquationChange = (equationId) => {
-    const newEquation = equations.find(eq => eq.id === equationId)
+    const newEquation = equations.find((eq) => eq.id === equationId)
     if (newEquation) {
       setActiveEquation(newEquation)
       initializeEquation(newEquation)
@@ -60,7 +49,7 @@ function App() {
   }
 
   const handleNextEquation = () => {
-    const currentIndex = equations.findIndex(eq => eq.id === activeEquation.id)
+    const currentIndex = equations.findIndex((eq) => eq.id === activeEquation.id)
     if (currentIndex < equations.length - 1) {
       const nextEquation = equations[currentIndex + 1]
       setActiveEquation(nextEquation)
@@ -72,37 +61,66 @@ function App() {
     setIsVictory(false)
   }
 
-
+  const currentEquationIndex = equations.findIndex((eq) => eq.id === activeEquation.id)
+  const currentStep = currentEquationIndex + 1
+  const totalSteps = equations.length
 
   return (
     <div className="App">
-      <header>
-        <h1>Algebra Scales</h1>
-        <p>Learn algebra through visual balance</p>
-      </header>
-
-      <main>
-        <div className="equation-selector">
-          <label htmlFor="equation-select">Choose an equation: </label>
-          <select
-            id="equation-select"
-            value={activeEquation.id}
-            onChange={(e) => handleEquationChange(Number(e.target.value))}
-            aria-describedby="equation-description"
-            disabled={isLoading}
-          >
-            {equations.map((eq) => (
-              <option key={eq.id} value={eq.id}>
-                {eq.name} - {eq.description}
-              </option>
-            ))}
-          </select>
-          <div id="equation-description" className="sr-only">
-            Select an algebraic equation to practice balancing scales with weights and balloons
-          </div>
+      <header className="app-header">
+        <div className="app-header-copy">
+          <p className="eyebrow">Pocket algebra practice</p>
+          <h1>Algebra Scales</h1>
+          <p className="app-subtitle">
+            Solve each equation by keeping both sides balanced.
+          </p>
         </div>
 
+        <div className="progress-card" aria-label={`Equation ${currentStep} of ${totalSteps}`}>
+          <span className="progress-label">Equation</span>
+          <strong>{currentStep} / {totalSteps}</strong>
+          <span className="progress-name">{activeEquation.name}</span>
+        </div>
+      </header>
+
+      <main className="app-main">
+        <section className="intro-card" aria-label="How the algebra model works">
+          <div className="equation-selector">
+            <label htmlFor="equation-select">Choose a challenge</label>
+            <p className="selector-help">{activeEquation.description}</p>
+            <select
+              id="equation-select"
+              value={activeEquation.id}
+              onChange={(e) => handleEquationChange(Number(e.target.value))}
+              aria-describedby="equation-description"
+            >
+              {equations.map((eq) => (
+                <option key={eq.id} value={eq.id}>
+                  {eq.name}
+                </option>
+              ))}
+            </select>
+            <div id="equation-description" className="sr-only">
+              Select an algebraic equation to practice balancing scales with weights and balloons.
+            </div>
+          </div>
+
+          <div className="legend-card">
+            <span className="legend-title">Legend</span>
+            <div className="legend-items">
+              <span className="legend-pill legend-weight">Weight = +1</span>
+              <span className="legend-pill legend-balloon">Balloon = -1</span>
+              <span className="legend-pill legend-unknown">Triangle = x</span>
+            </div>
+          </div>
+
+          <p className="micro-tip">
+            Tip: remove matching items from both sides until x is by itself.
+          </p>
+        </section>
+
         <EquationDisplay equationState={equationState} />
+
         <Workspace
           equationState={equationState}
           setEquationState={setEquationState}
@@ -114,23 +132,15 @@ function App() {
             onClick={handleReset}
             className="reset-button"
             aria-label="Reset the current equation to its initial state"
-            disabled={isLoading}
           >
-            Reset Equation
+            Start this one again
           </button>
         </div>
       </main>
 
-      <footer>
-        <p>Visualize equations as balanced scales</p>
+      <footer className="app-footer">
+        <p>Practice one step at a time and keep the balance steady.</p>
       </footer>
-
-      {isLoading && (
-        <div className="loading-overlay" aria-live="polite" aria-label="Loading algebra scales application">
-          <div className="loading-spinner" aria-hidden="true"></div>
-          <p>Loading scales...</p>
-        </div>
-      )}
 
       <VictoryModal
         isVisible={isVictory}
@@ -138,9 +148,7 @@ function App() {
         onNextEquation={handleNextEquation}
         onReset={handleReset}
         onClose={handleCloseVictory}
-        hasNextEquation={
-          equations.findIndex(eq => eq.id === activeEquation.id) < equations.length - 1
-        }
+        hasNextEquation={currentEquationIndex < equations.length - 1}
       />
     </div>
   )

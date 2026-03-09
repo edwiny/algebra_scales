@@ -9,61 +9,67 @@ function ControlPanel({ setEquationState }) {
       value: itemType === 'weight' ? 1 : -1
     }
 
-    setEquationState(prev => ({
+    setEquationState((prev) => ({
       ...prev,
       [side]: [...prev[side], newItem]
     }))
   }
 
-  return (
-    <div className="control-panel">
-      <h3 className="control-title">Add Items to Scales</h3>
-      <div className="control-grid">
-        {/* Weight row */}
-        <div className="control-row">
-          <button
-            className="control-button left-arrow"
-            onClick={() => addItemToSide('weight', 'leftSide')}
-            aria-label="Add weight to left side"
-          >
-            ←
-          </button>
-          <div className="item-display">
-            <Weight />
-            <span className="item-label">Weight</span>
-          </div>
-          <button
-            className="control-button right-arrow"
-            onClick={() => addItemToSide('weight', 'rightSide')}
-            aria-label="Add weight to right side"
-          >
-            →
-          </button>
-        </div>
+  const controls = [
+    {
+      key: 'weight',
+      title: 'Add a weight',
+      description: 'Use this for positive one.',
+      preview: <Weight />,
+    },
+    {
+      key: 'balloon',
+      title: 'Add a balloon',
+      description: 'Use this for negative one.',
+      preview: <Balloon />,
+    },
+  ]
 
-        {/* Balloon row */}
-        <div className="control-row">
-          <button
-            className="control-button left-arrow"
-            onClick={() => addItemToSide('balloon', 'leftSide')}
-            aria-label="Add balloon to left side"
-          >
-            ←
-          </button>
-          <div className="item-display">
-            <Balloon />
-            <span className="item-label">Balloon</span>
-          </div>
-          <button
-            className="control-button right-arrow"
-            onClick={() => addItemToSide('balloon', 'rightSide')}
-            aria-label="Add balloon to right side"
-          >
-            →
-          </button>
-        </div>
+  return (
+    <aside className="control-panel" aria-label="Add items to the scale">
+      <div className="control-panel-header">
+        <h3 className="control-title">Build both sides</h3>
+        <p className="control-subtitle">Choose what to add, then send it left or right.</p>
       </div>
-    </div>
+
+      <div className="control-grid">
+        {controls.map((control) => (
+          <section key={control.key} className="control-card">
+            <div className="item-display">
+              {control.preview}
+              <div className="item-copy">
+                <span className="item-title">{control.title}</span>
+                <span className="item-label">{control.description}</span>
+              </div>
+            </div>
+
+            <div className="control-actions">
+              <button
+                type="button"
+                className="control-button"
+                onClick={() => addItemToSide(control.key, 'leftSide')}
+                aria-label={`Add ${control.key} to left side`}
+              >
+                Add to left
+              </button>
+              <button
+                type="button"
+                className="control-button control-button-alt"
+                onClick={() => addItemToSide(control.key, 'rightSide')}
+                aria-label={`Add ${control.key} to right side`}
+              >
+                Add to right
+              </button>
+            </div>
+          </section>
+        ))}
+      </div>
+    </aside>
   )
 }
 
