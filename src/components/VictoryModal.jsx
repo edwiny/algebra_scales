@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import confetti from 'canvas-confetti'
 import './VictoryModal.css'
 
 function VictoryModal({
@@ -9,7 +11,39 @@ function VictoryModal({
   onClose,
   hasNextEquation
 }) {
-  if (!isVisible) return null
+  const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+    let timerId
+
+    if (isVisible) {
+      const prefersReducedMotion = typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      if (!prefersReducedMotion) {
+        confetti({
+          particleCount: 220,
+          spread: 75,
+          startVelocity: 35,
+          origin: { x: 0.5, y: 0.5 }
+        })
+      }
+
+      const delay = prefersReducedMotion ? 0 : 1000
+      timerId = setTimeout(() => setShowModal(true), delay)
+    } else {
+      setShowModal(false)
+    }
+
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId)
+      }
+    }
+  }, [isVisible])
+
+  if (!showModal) return null
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -69,4 +103,5 @@ function VictoryModal({
 }
 
 export default VictoryModal
+
 
