@@ -5,18 +5,24 @@ import './Workspace.css'
 function Workspace({
   equationState,
   setEquationState,
-  solution
+  solution,
+  pendingRemoval,
+  onRemoveItem,
+  onCancelPendingRemoval,
 }) {
   return (
     <div className="workspace">
       <Scale
         leftSide={equationState.leftSide}
         rightSide={equationState.rightSide}
-        setEquationState={setEquationState}
+        pendingRemoval={pendingRemoval}
+        onRemoveItem={onRemoveItem}
+        onCancelPendingRemoval={onCancelPendingRemoval}
         solution={solution}
       />
       <ControlPanel
         setEquationState={setEquationState}
+        isLocked={Boolean(pendingRemoval)}
       />
     </div>
   )

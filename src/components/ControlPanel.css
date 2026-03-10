@@ -7,6 +7,11 @@
   border-radius: 1.35rem;
 }
 
+.control-panel-locked {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .control-panel-header {
   display: grid;
   gap: 0.3rem;

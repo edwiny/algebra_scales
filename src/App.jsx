@@ -14,9 +14,11 @@ function App() {
     rightSide: [],
   })
   const [isVictory, setIsVictory] = useState(false)
+  const [pendingRemoval, setPendingRemoval] = useState(null)
 
   const initializeEquation = (equation) => {
     setIsVictory(false)
+    setPendingRemoval(null)
 
     setEquationState({
       leftSide: equation.leftSide,
@@ -48,6 +50,47 @@ function App() {
       setActiveEquation(nextEquation)
       initializeEquation(nextEquation)
     }
+  }
+
+  const handleRemoveItem = (side, index, item) => {
+    setEquationState((prev) => ({
+      ...prev,
+      [side]: prev[side].filter((_, itemIndex) => itemIndex !== index),
+    }))
+
+    if (pendingRemoval) {
+      const isMatchingSide = side !== pendingRemoval.fromSide
+      const isMatchingType = item.type === pendingRemoval.type
+
+      if (isMatchingSide && isMatchingType) {
+        setPendingRemoval(null)
+      }
+
+      return
+    }
+
+    setPendingRemoval({
+      type: item.type,
+      fromSide: side,
+      item,
+      index,
+    })
+  }
+
+  const handleCancelPendingRemoval = () => {
+    if (!pendingRemoval) return
+
+    setEquationState((prev) => {
+      const updatedSide = [...prev[pendingRemoval.fromSide]]
+      updatedSide.splice(pendingRemoval.index, 0, pendingRemoval.item)
+
+      return {
+        ...prev,
+        [pendingRemoval.fromSide]: updatedSide,
+      }
+    })
+
+    setPendingRemoval(null)
   }
 
   const handleCloseVictory = () => {
@@ -104,6 +147,9 @@ function App() {
         <Workspace
           equationState={equationState}
           setEquationState={setEquationState}
+          pendingRemoval={pendingRemoval}
+          onRemoveItem={handleRemoveItem}
+          onCancelPendingRemoval={handleCancelPendingRemoval}
           solution={activeEquation.solution}
         />
 
@@ -136,5 +182,6 @@ function App() {
 }
 
 export default App
+
 
 

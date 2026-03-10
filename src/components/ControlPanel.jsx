@@ -2,7 +2,7 @@ import Weight from './Weight'
 import Balloon from './Balloon'
 import './ControlPanel.css'
 
-function ControlPanel({ setEquationState }) {
+function ControlPanel({ setEquationState, isLocked }) {
   const addItemToSide = (itemType, side) => {
     const newItem = {
       type: itemType,
@@ -31,7 +31,11 @@ function ControlPanel({ setEquationState }) {
   ]
 
   return (
-    <aside className="control-panel" aria-label="Add items to the scale">
+    <aside
+      className={`control-panel ${isLocked ? 'control-panel-locked' : ''}`}
+      aria-label="Add items to the scale"
+      aria-disabled={isLocked}
+    >
       <div className="control-panel-header">
         <h3 className="control-title">Build both sides</h3>
         <p className="control-subtitle">Choose what to add, then send it left or right.</p>
@@ -54,6 +58,7 @@ function ControlPanel({ setEquationState }) {
                 className="control-button"
                 onClick={() => addItemToSide(control.key, 'leftSide')}
                 aria-label={`Add ${control.key} to left side`}
+                disabled={isLocked}
               >
                 Add to left
               </button>
@@ -62,6 +67,7 @@ function ControlPanel({ setEquationState }) {
                 className="control-button control-button-alt"
                 onClick={() => addItemToSide(control.key, 'rightSide')}
                 aria-label={`Add ${control.key} to right side`}
+                disabled={isLocked}
               >
                 Add to right
               </button>
