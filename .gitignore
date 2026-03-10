@@ -30,3 +30,4 @@ dist/
 .agents
 .claude
 skills-lock.json
+.codex*
