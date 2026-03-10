@@ -71,24 +71,21 @@ export const equations = [
   },
   {
     id: 4,
-    name: "Negative Result",
+    name: "The Other Side",
     description: "Unknown on the right side",
     leftSide: [
       { type: 'weight', value: 1 },
       { type: 'weight', value: 1 },
       { type: 'weight', value: 1 },
       { type: 'weight', value: 1 },
+      
     ],
     rightSide: [
       { type: 'unknown', value: 1 },
       { type: 'weight', value: 1 },
       { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
     ],
-    solution: -2, // 4 = x + 6, so x = -2
+    solution: -2  ,
   },
   {
     id: 5,
