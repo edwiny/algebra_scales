@@ -44,8 +44,8 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
   const balanceMessage = balance === 0
     ? 'Balanced'
     : balance > 0
-      ? 'Left side is heavier'
-      : 'Right side is heavier'
+      ? 'Right side is heavier'
+      : 'Left side is heavier'
 
   return (
     <section className="scale-container" aria-label="Balance scale workspace">
@@ -138,3 +138,6 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
 }
 
 export default Scale
+
+
+

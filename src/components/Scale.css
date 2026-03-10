@@ -154,7 +154,9 @@
 }
 
 .fulcrum {
-  display: none;
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
 }
 
 .beam {
@@ -204,10 +206,5 @@
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
   }
-
-  .fulcrum {
-    display: grid;
-    gap: 0.25rem;
-    justify-items: center;
-  }
 }
+
