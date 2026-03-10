@@ -4,6 +4,7 @@ import EquationDisplay from './components/EquationDisplay'
 import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
 import { checkVictoryCondition } from './utils/balanceLogic'
+import { stateToEquation } from './utils/algebraParser'
 import './App.css'
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
   const currentEquationIndex = equations.findIndex((eq) => eq.id === activeEquation.id)
   const currentStep = currentEquationIndex + 1
   const totalSteps = equations.length
+  const originalEquation = stateToEquation({ leftSide: activeEquation.leftSide, rightSide: activeEquation.rightSide })
 
   return (
     <div className="App">
@@ -123,6 +125,7 @@ function App() {
       <VictoryModal
         isVisible={isVictory}
         solution={activeEquation.solution}
+        originalEquation={originalEquation}
         onNextEquation={handleNextEquation}
         onReset={handleReset}
         onClose={handleCloseVictory}
@@ -133,4 +136,5 @@ function App() {
 }
 
 export default App
+
 

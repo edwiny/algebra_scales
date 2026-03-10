@@ -96,21 +96,16 @@ export const equations = [
     description: "Equation with balloons",
     leftSide: [
       { type: 'unknown', value: 1 },
+      { type: 'weight', value: 1 },
+      { type: 'weight', value: 1 },
+      
     ],
     rightSide: [
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
-      { type: 'weight', value: 1 },
       { type: 'balloon', value: -1 },
       { type: 'balloon', value: -1 },
       { type: 'balloon', value: -1 },
     ],
-    solution: 5, // x = 8 - 3, so x = 5
+    solution: -5, 
   },
   {
     id: 6,

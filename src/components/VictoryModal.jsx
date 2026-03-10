@@ -3,6 +3,7 @@ import './VictoryModal.css'
 function VictoryModal({
   isVisible,
   solution,
+  originalEquation,
   onNextEquation,
   onReset,
   onClose,
@@ -39,7 +40,7 @@ function VictoryModal({
         <h2 id="victory-title" className="victory-title">Nice work.</h2>
 
         <div id="victory-message" className="victory-message">
-          You found that <strong>x = {solution}</strong>
+          Slay! You solved <strong>{originalEquation || 'the equation'}</strong> by isolating x and finding that <strong>x = {solution}</strong>.
         </div>
 
         <p className="victory-note">Reset to practice again or move on when you feel ready.</p>
@@ -68,3 +69,4 @@ function VictoryModal({
 }
 
 export default VictoryModal
+
