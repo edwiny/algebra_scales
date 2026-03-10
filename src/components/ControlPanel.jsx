@@ -19,13 +19,13 @@ function ControlPanel({ setEquationState }) {
     {
       key: 'weight',
       title: 'Add a weight',
-      description: 'Use this for positive one.',
+      description: 'Weights push down.',
       preview: <Weight />,
     },
     {
       key: 'balloon',
       title: 'Add a balloon',
-      description: 'Use this for negative one.',
+      description: 'Balloons pull upwards.',
       preview: <Balloon />,
     },
   ]

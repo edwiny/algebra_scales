@@ -97,7 +97,7 @@ function App() {
           </p>
         </section>
 
-        <EquationDisplay equationState={equationState} />
+        <EquationDisplay equationState={equationState} solution={activeEquation.solution} />
 
         <Workspace
           equationState={equationState}
@@ -133,3 +133,4 @@ function App() {
 }
 
 export default App
+

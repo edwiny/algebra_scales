@@ -23,7 +23,7 @@ function Balloon({ value = -1, draggable = false, onDragStart, onDragEnd, id }) 
       onDragEnd={handleDragEnd}
     >
       <div className="balloon-body">
-        <span className="balloon-value">1</span>
+        <span className="balloon-value">-1</span>
       </div>
       <div className="balloon-string" />
     </div>
@@ -31,3 +31,4 @@ function Balloon({ value = -1, draggable = false, onDragStart, onDragEnd, id }) 
 }
 
 export default Balloon
+

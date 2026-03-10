@@ -17,16 +17,17 @@ function Weight({ value = 1, draggable = false, onDragStart, onDragEnd, id }) {
   return (
     <div
       className={`weight ${draggable ? 'draggable' : ''}`}
-      title="Weight: 1g"
+      title="Weight: +1"
       draggable={draggable}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <div className="weight-body">
-        <span className="weight-value">1g</span>
+        <span className="weight-value">+1</span>
       </div>
     </div>
   )
 }
 
 export default Weight
+

@@ -73,9 +73,10 @@ function sideToExpression(items) {
 /**
  * Convert equation state to algebraic equation string
  * @param {Object} equationState - State with leftSide and rightSide arrays
+ * @param {string} comparisonOperator - Comparison operator (=, <, >)
  * @returns {string} Equation string
  */
-export function stateToEquation(equationState) {
+export function stateToEquation(equationState, comparisonOperator = '=') {
   const leftExpr = sideToExpression(equationState.leftSide)
   const rightExpr = sideToExpression(equationState.rightSide)
 
@@ -83,7 +84,9 @@ export function stateToEquation(equationState) {
     return ''
   }
 
-  return `${leftExpr} = ${rightExpr}`
+  const safeOperator = ['=', '<', '>'].includes(comparisonOperator) ? comparisonOperator : '='
+
+  return `${leftExpr} ${safeOperator} ${rightExpr}`
 }
 
 /**
@@ -171,3 +174,4 @@ export function equationToState(equation) {
     rightSide: parseTerms(sides[1]),
   }
 }
+

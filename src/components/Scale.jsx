@@ -5,7 +5,6 @@ import './Scale.css'
 
 function Scale({ leftSide, rightSide, setEquationState, solution }) {
   const balance = calculateBalance(leftSide, rightSide, solution)
-  const balanceTilt = Math.max(-100, Math.min(100, balance * 20))
 
   const handleRemove = (side, indexToRemove) => {
     setEquationState((prev) => ({
@@ -58,12 +57,6 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
         <div className="balance-status" aria-live="polite">
           <span className="balance-status-label">Scale check</span>
           <strong>{balanceMessage}</strong>
-        </div>
-      </div>
-
-      <div className="beam-meter" aria-hidden="true">
-        <div className="beam-meter-track">
-          <div className="beam-meter-indicator" style={{ transform: `translateX(${balanceTilt}%)` }} />
         </div>
       </div>
 
@@ -138,6 +131,7 @@ function Scale({ leftSide, rightSide, setEquationState, solution }) {
 }
 
 export default Scale
+
 
 
 

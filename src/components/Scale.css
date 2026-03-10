@@ -38,29 +38,8 @@
   opacity: 0.8;
 }
 
-.beam-meter {
-  padding: 0.2rem 0;
-}
 
-.beam-meter-track {
-  position: relative;
-  height: 0.75rem;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #f1d2cc 0%, #f8f2ea 50%, #d3ebee 100%);
-}
 
-.beam-meter-indicator {
-  position: absolute;
-  top: -0.35rem;
-  left: 50%;
-  width: 1.4rem;
-  height: 1.4rem;
-  margin-left: -0.7rem;
-  border-radius: 50%;
-  background: var(--accent-strong);
-  box-shadow: 0 8px 18px rgba(66, 123, 137, 0.2);
-  transition: transform 0.25s ease;
-}
 
 .scale-sides {
   display: grid;
@@ -177,8 +156,8 @@
 }
 
 .unknown-triangle {
-  width: 3rem;
-  height: 3rem;
+  width: 2.2rem;
+  height: 2.2rem;
   position: relative;
   display: flex;
   align-items: center;
@@ -190,7 +169,7 @@
 
 .unknown-triangle span {
   position: absolute;
-  bottom: 0.35rem;
+  bottom: 0.15rem;
   font-size: 1.1rem;
   font-weight: 700;
   color: #fff8ed;
@@ -207,4 +186,5 @@
     align-items: center;
   }
 }
+
 
