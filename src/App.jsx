@@ -36,14 +36,6 @@ function App() {
     setIsVictory(victory)
   }, [equationState, activeEquation.solution])
 
-  const handleEquationChange = (equationId) => {
-    const newEquation = equations.find((eq) => eq.id === equationId)
-    if (newEquation) {
-      setActiveEquation(newEquation)
-      initializeEquation(newEquation)
-    }
-  }
-
   const handleReset = () => {
     initializeEquation(activeEquation)
   }
@@ -85,24 +77,10 @@ function App() {
 
       <main className="app-main">
         <section className="intro-card" aria-label="How the algebra model works">
-          <div className="equation-selector">
-            <label htmlFor="equation-select">Choose a challenge</label>
-            <p className="selector-help">{activeEquation.description}</p>
-            <select
-              id="equation-select"
-              value={activeEquation.id}
-              onChange={(e) => handleEquationChange(Number(e.target.value))}
-              aria-describedby="equation-description"
-            >
-              {equations.map((eq) => (
-                <option key={eq.id} value={eq.id}>
-                  {eq.name}
-                </option>
-              ))}
-            </select>
-            <div id="equation-description" className="sr-only">
-              Select an algebraic equation to practice balancing scales with weights and balloons.
-            </div>
+          <div className="intro-header">
+            <span className="intro-label">Current challenge</span>
+            <p className="intro-title">{activeEquation.name}</p>
+            <p className="intro-subtitle">{activeEquation.description}</p>
           </div>
 
           <div className="legend-card">

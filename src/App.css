@@ -77,39 +77,28 @@
   padding: 1rem;
 }
 
-.equation-selector {
+.intro-header {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
-.equation-selector label,
-.legend-title {
-  font-size: 0.95rem;
+.intro-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.intro-title {
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
 }
 
-.selector-help,
-.micro-tip,
-.app-footer {
+.intro-subtitle {
   color: var(--text-soft);
-}
-
-.equation-selector select {
-  width: 100%;
-  min-height: 3rem;
-  padding: 0.8rem 1rem;
-  border-radius: 1rem;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--text-main);
-  font: inherit;
-}
-
-.equation-selector select:focus-visible,
-.reset-button:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
+  font-size: 0.95rem;
 }
 
 .legend-card {
@@ -149,6 +138,7 @@
 }
 
 .micro-tip {
+  color: var(--text-soft);
   font-size: 0.95rem;
 }
 
@@ -179,6 +169,7 @@
 }
 
 .app-footer {
+  color: var(--text-soft);
   padding: 0.5rem 0 1rem;
   text-align: center;
   font-size: 0.92rem;
@@ -234,5 +225,11 @@
 
   .progress-card {
     min-width: 12rem;
+  }
+}
+
+@media (max-width: 719px) {
+  .progress-card {
+    display: none;
   }
 }
