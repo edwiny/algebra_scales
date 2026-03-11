@@ -59,13 +59,11 @@ function Scale({
   const leftItems = renderItems(leftSide, 'leftSide')
   const rightItems = renderItems(rightSide, 'rightSide')
   const pendingMessage = isPending
-    ? `You removed a ${requiredType}. Now remove a matching ${requiredType} from the ${targetSide === 'leftSide' ? 'left' : 'right'} side.`
+    ? `Now remove a matching ${requiredType} from the ${targetSide === 'leftSide' ? 'left' : 'right'} side to keep the scales balanced.`
     : null
-  const balanceMessage = balance === 0
-    ? 'Balanced'
-    : balance > 0
-      ? 'Right side is heavier'
-      : 'Left side is heavier'
+  const heavierSide = balance === 0 ? null : balance > 0 ? 'right' : 'left'
+  const leftSideLabel = heavierSide === 'left' ? 'Left side is heavier!' : 'Left side'
+  const rightSideLabel = heavierSide === 'right' ? 'Right side is heavier!' : 'Right side'
 
   return (
     <section
@@ -90,18 +88,16 @@ function Scale({
           )}
         </div>
 
-        <div className="balance-status" aria-live="polite">
-          <span className="balance-status-label">Scale check</span>
-          <strong>{balanceMessage}</strong>
-        </div>
       </div>
 
       <div className="scale-sides">
-        <section className="scale-side left-side" aria-label="Left side of the scale">
+        <section
+          className={`scale-side left-side ${heavierSide === 'left' ? 'scale-side-heavy' : ''}`}
+          aria-label="Left side of the scale"
+        >
           <div className="side-heading">
             <div>
-              <div className="side-label">Left side</div>
-              <div className="side-count">{leftItems.length} item{leftItems.length === 1 ? '' : 's'}</div>
+              <div className="side-label">{leftSideLabel}</div>
             </div>
           </div>
 
@@ -141,11 +137,13 @@ function Scale({
           <div className="pivot"></div>
         </div>
 
-        <section className="scale-side right-side" aria-label="Right side of the scale">
+        <section
+          className={`scale-side right-side ${heavierSide === 'right' ? 'scale-side-heavy' : ''}`}
+          aria-label="Right side of the scale"
+        >
           <div className="side-heading">
             <div>
-              <div className="side-label">Right side</div>
-              <div className="side-count">{rightItems.length} item{rightItems.length === 1 ? '' : 's'}</div>
+              <div className="side-label">{rightSideLabel}</div>
             </div>
           </div>
 
@@ -185,6 +183,9 @@ function Scale({
 }
 
 export default Scale
+
+
+
 
 
 

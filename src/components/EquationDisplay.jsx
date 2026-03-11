@@ -11,7 +11,6 @@ function EquationDisplay({ equationState, solution = null }) {
     <section className="equation-display" aria-label="Current algebra equation">
       <div className="equation-label">Current equation</div>
       <div className="equation-text">{equation || 'No equation yet'}</div>
-      <p className="equation-helper">Watch how the symbols change as you keep the scale balanced.</p>
     </section>
   )
 }

@@ -76,12 +76,25 @@
   background: #dff0f4;
   color: #2f6472;
   font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.control-button-alt {
-  background: #fff1e6;
-  color: #8b6140;
-  border-color: rgba(139, 97, 64, 0.22);
+.control-button-left {
+  background: rgba(74, 105, 132, 0.4);
+  color: #2e4357;
+  border-color: rgba(74, 105, 132, 0.4);
+}
+
+.control-button-right {
+  background: rgba(192, 108, 83, 0.4);
+  color: #5c2f24;
+  border-color: rgba(192, 108, 83, 0.4);
+}
+
+.control-button-left:hover:not(:disabled),
+.control-button-right:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .control-button:focus-visible {
