@@ -55,7 +55,7 @@ function ControlPanel({ setEquationState, isLocked }) {
             <div className="control-actions">
               <button
                 type="button"
-                className="control-button"
+                className="control-button control-button-left"
                 onClick={() => addItemToSide(control.key, 'leftSide')}
                 aria-label={`Add ${control.key} to left side`}
                 disabled={isLocked}
@@ -64,7 +64,7 @@ function ControlPanel({ setEquationState, isLocked }) {
               </button>
               <button
                 type="button"
-                className="control-button control-button-alt"
+                className="control-button control-button-right"
                 onClick={() => addItemToSide(control.key, 'rightSide')}
                 aria-label={`Add ${control.key} to right side`}
                 disabled={isLocked}
