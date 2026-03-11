@@ -3,7 +3,7 @@ import Workspace from './components/Workspace'
 import EquationDisplay from './components/EquationDisplay'
 import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
-import { checkVictoryCondition } from './utils/balanceLogic'
+import { checkVictoryCondition, calculateBalance } from './utils/balanceLogic'
 import { stateToEquation } from './utils/algebraParser'
 import './App.css'
 
@@ -74,7 +74,13 @@ function App() {
       return
     }
 
-    if (hasMatchingItem) {
+    const isBalanced = calculateBalance(
+      equationState.leftSide,
+      equationState.rightSide,
+      activeEquation.solution
+    ) === 0
+
+    if (hasMatchingItem && isBalanced) {
       setPendingRemoval({
         type: item.type,
         fromSide: side,
@@ -166,13 +172,13 @@ function App() {
             className="reset-button"
             aria-label="Reset the current equation to its initial state"
           >
-            Start this one again
+            Start Over
           </button>
         </div>
       </main>
 
       <footer className="app-footer">
-        <p>Practice one step at a time and keep the balance steady.</p>
+        <p>© {new Date().getFullYear()} MathSlay. All rights reserved.</p>
       </footer>
 
       <VictoryModal
@@ -189,6 +195,9 @@ function App() {
 }
 
 export default App
+
+
+
 
 
 
