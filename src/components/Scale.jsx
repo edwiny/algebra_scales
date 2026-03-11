@@ -59,7 +59,7 @@ function Scale({
   const leftItems = renderItems(leftSide, 'leftSide')
   const rightItems = renderItems(rightSide, 'rightSide')
   const pendingMessage = isPending
-    ? `You removed a ${requiredType}. Now remove a matching ${requiredType} from the ${targetSide === 'leftSide' ? 'left' : 'right'} side.`
+    ? `Now remove a matching ${requiredType} from the ${targetSide === 'leftSide' ? 'left' : 'right'} side to keep the scales balanced.`
     : null
   const balanceMessage = balance === 0
     ? 'Balanced'

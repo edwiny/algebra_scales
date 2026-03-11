@@ -53,6 +53,11 @@ function App() {
   }
 
   const handleRemoveItem = (side, index, item) => {
+    const otherSide = side === 'leftSide' ? 'rightSide' : 'leftSide'
+    const hasMatchingItem = equationState[otherSide].some(
+      (candidate) => candidate.type === item.type
+    )
+
     setEquationState((prev) => ({
       ...prev,
       [side]: prev[side].filter((_, itemIndex) => itemIndex !== index),
@@ -69,12 +74,14 @@ function App() {
       return
     }
 
-    setPendingRemoval({
-      type: item.type,
-      fromSide: side,
-      item,
-      index,
-    })
+    if (hasMatchingItem) {
+      setPendingRemoval({
+        type: item.type,
+        fromSide: side,
+        item,
+        index,
+      })
+    }
   }
 
   const handleCancelPendingRemoval = () => {
@@ -182,6 +189,7 @@ function App() {
 }
 
 export default App
+
 
 
 
