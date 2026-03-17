@@ -5,6 +5,7 @@ import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
 import { checkVictoryCondition, calculateBalance } from './utils/balanceLogic'
 import { stateToEquation } from './utils/algebraParser'
+import { WEBSITE_NAME, WEBSITE_URL, SUPPORT_EMAIL } from './config/constants'
 import './App.css'
 
 function App() {
@@ -138,19 +139,18 @@ function App() {
   const staticPageContent = {
     terms: {
       title: 'Terms of Service',
-      subtitle: 'Thank you for using MathSlay. By accessing the app, you agree to the following.',
+      subtitle: `Thank you for using ${WEBSITE_NAME}. By accessing the app, you agree to the following.`,
       sections: [
         {
-          title: 'About MathSlay',
+          title: `About ${WEBSITE_NAME}`,
           body: [
-            'MathSlay (mathslay.com) is a free educational tool designed to help students practise algebra. It is provided as a personal project with no warranty or guarantee of availability.',
-
+            `${WEBSITE_NAME} (${WEBSITE_URL}) is a free educational tool designed to help students practise algebra. It is provided as a personal project with no warranty or guarantee of availability.`,
           ],
         },
         {
           title: 'Educational Use',
           body: [
-            'MathSlay is free to use for personal and educational purposes.',
+            `${WEBSITE_NAME} is free to use for personal and educational purposes.`,
             'You may share the app with students and educators as long as the experience remains free and unmodified.',
             'You may not copy, reproduce, or redistribute the code, design, or content without permission.',
           ],
@@ -164,7 +164,7 @@ function App() {
         {
           title: 'Disclaimer',
           body: [
-            'MathSlay is provided "as is" without warranty of any kind. We make no guarantees about accuracy, availability, or suitability for any particular purpose. Use of the site is at your own risk.',
+            `${WEBSITE_NAME} is provided "as is" without warranty of any kind. We make no guarantees about accuracy, availability, or suitability for any particular purpose. Use of the site is at your own risk.`,
           ],
         },
         {
@@ -183,15 +183,15 @@ function App() {
         {
           title: 'Overview',
           body: [
-            'MathSlay (mathslay.com) is a free, static educational web application that helps students practise algebra through interactive visualisations.',
+            `${WEBSITE_NAME} (${WEBSITE_URL}) is a free, static educational web application that helps students practise algebra through interactive visualisations.`,
             'We are committed to protecting your privacy and being transparent about how we handle data.',
-            'This policy explains what information is collected when you use MathSlay, how it is used, and your rights in relation to that information.',
+            `This policy explains what information is collected when you use ${WEBSITE_NAME}, how it is used, and your rights in relation to that information.`,
           ],
         },
         {
           title: 'Information We Collect',
           body: [
-            'MathSlay does not require you to create an account or provide any personal information to use the site.',
+            `${WEBSITE_NAME} does not require you to create an account or provide any personal information to use the site.`,
             'However, we use Google Analytics to understand how visitors use the site. Google Analytics automatically collects the following types of information when you visit:',
           ],
           bullets: [
@@ -206,7 +206,7 @@ function App() {
           title: 'Cookies',
           body: [
             'Google Analytics uses cookies — small text files stored on your device — to distinguish visitors and track sessions.',
-            'You can disable cookies through your browser settings. Doing so will not affect your ability to use MathSlay, but it will prevent Google Analytics from collecting usage data about your visit.'
+            `You can disable cookies through your browser settings. Doing so will not affect your ability to use ${WEBSITE_NAME}, but it will prevent Google Analytics from collecting usage data about your visit.`
           ],
         },
         {
@@ -231,7 +231,7 @@ function App() {
         {
           title: 'Email',
           body: [
-            'Send feedback or questions to mathslayapp@gmail.com and we will be in touch.',
+            `Send feedback or questions to ${SUPPORT_EMAIL} and we will be in touch.`,
           ],
         }
       ],
@@ -283,7 +283,7 @@ function App() {
       <header className="app-header">
         <div className="app-header-copy">
           <p className="eyebrow">visual algebra solver</p>
-          <h1>MathSlay</h1>
+          <h1>{WEBSITE_NAME}</h1>
           <p className="app-subtitle">
             Slay at math
           </p>
@@ -350,7 +350,7 @@ function App() {
           <a href="#privacy">Privacy Policy</a>
           <a href="#contact">Contact Us</a>
         </div>
-        <p>© {new Date().getFullYear()} MathSlay. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} {WEBSITE_NAME}. All rights reserved.</p>
       </footer>
 
       <VictoryModal
@@ -367,14 +367,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-
-
-
-
-
-
