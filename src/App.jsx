@@ -361,7 +361,13 @@ function App() {
            
           </section>
 
-          <EquationDisplay equationState={equationState} solution={activeEquation.solution} />
+            <EquationDisplay 
+              equationState={equationState} 
+              solution={activeEquation.solution}
+              isSolved={isVictory}
+              onNextEquation={handleNextEquation}
+              hasNextEquation={currentEquationIndex < equations.length - 1}
+            />
 
           <Workspace
             equationState={equationState}
@@ -398,13 +404,14 @@ function App() {
       </footer>
 
       <VictoryModal
-        isVisible={isVictory}
+        isVisible={isVictory && currentEquationIndex === equations.length - 1}
         solution={activeEquation.solution}
         originalEquation={originalEquation}
         onNextEquation={handleNextEquation}
         onReset={handleReset}
         onClose={handleCloseVictory}
         hasNextEquation={currentEquationIndex < equations.length - 1}
+        isFinalEquation={currentEquationIndex === equations.length - 1}
       />
     </div>
   )

@@ -9,7 +9,8 @@ function VictoryModal({
   onNextEquation,
   onReset,
   onClose,
-  hasNextEquation
+  hasNextEquation,
+  isFinalEquation = false
 }) {
   const [showModal, setShowModal] = useState(false)
 
@@ -71,13 +72,25 @@ function VictoryModal({
 
         <div className="victory-badge" aria-hidden="true">Solved</div>
 
-        <h2 id="victory-title" className="victory-title">Nice work.</h2>
+        <h2 id="victory-title" className="victory-title">
+          {isFinalEquation ? '🎉 Victory!' : 'Nice work.'}
+        </h2>
 
         <div id="victory-message" className="victory-message">
-          Slay! You solved <strong>{originalEquation || 'the equation'}</strong> by isolating x and finding that <strong>x = {solution}</strong>.
+          {isFinalEquation ? (
+            <strong>Well done, you solved all of the equations!</strong>
+          ) : (
+            <>
+              Slay! You solved <strong>{originalEquation || 'the equation'}</strong> by isolating x and finding that <strong>x = {solution}</strong>.
+            </>
+          )}
         </div>
 
-        <p className="victory-note">Reset to practice again or move on when you feel ready.</p>
+        <p className="victory-note">
+          {isFinalEquation 
+            ? 'Congratulations on completing all the challenges!' 
+            : 'Reset to practice again or move on when you feel ready.'}
+        </p>
 
         <div className="victory-actions" role="group" aria-label="Victory actions">
           {hasNextEquation && (
@@ -92,9 +105,9 @@ function VictoryModal({
           <button
             className="victory-btn victory-btn-secondary"
             onClick={onReset}
-            aria-label="Reset the current equation to try again"
+            aria-label={isFinalEquation ? 'Restart from the beginning' : 'Reset the current equation to try again'}
           >
-            Try this one again
+            {isFinalEquation ? 'Restart from beginning' : 'Try this one again'}
           </button>
         </div>
       </div>

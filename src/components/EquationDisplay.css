@@ -16,6 +16,14 @@
   color: var(--accent-strong);
 }
 
+.equation-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .equation-text {
   font-size: clamp(1.4rem, 5vw, 2.3rem);
   font-weight: 700;
@@ -27,6 +35,63 @@
 .equation-helper {
   font-size: 0.92rem;
   color: var(--text-soft);
+}
+
+/* Solved state styles */
+.equation-display.equation-solved {
+  animation: wiggle 0.5s ease-in-out;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2), var(--shadow-soft);
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-3deg); }
+  40% { transform: rotate(3deg); }
+  60% { transform: rotate(-3deg); }
+  80% { transform: rotate(3deg); }
+}
+
+.equation-solved-feedback {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.solved-tick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #4CAF50;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+.next-equation-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: #dff0f4;
+  color: #2f6472;
+  border: 1px solid rgba(66, 123, 137, 0.26);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.next-equation-btn:hover {
+  background: #c5e6ec;
+  transform: scale(1.05);
+}
+
+.next-equation-btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 @media (max-width: 719px) {
