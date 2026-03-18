@@ -11,6 +11,8 @@ function Scale({
   pendingRemoval,
   onRemoveItem,
   onCancelPendingRemoval,
+  divideOperation,
+  onDivide,
 }) {
   const balance = calculateBalance(leftSide, rightSide, solution)
   const isPending = Boolean(pendingRemoval)
@@ -178,6 +180,22 @@ function Scale({
           </div>
         </section>
       </div>
+
+      {divideOperation && (
+        <div className="divide-bar-container">
+          <button
+            type="button"
+            className="divide-bar-button"
+            onClick={onDivide}
+            aria-label={`Divide both sides by ${divideOperation.divisor}`}
+          >
+            <span className="divide-bar-icon">÷</span>
+            <span className="divide-bar-text">
+              Divide both sides by {divideOperation.divisor}
+            </span>
+          </button>
+        </div>
+      )}
     </section>
   )
 }

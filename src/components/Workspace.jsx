@@ -9,6 +9,8 @@ function Workspace({
   pendingRemoval,
   onRemoveItem,
   onCancelPendingRemoval,
+  divideOperation,
+  onDivide,
 }) {
   return (
     <div className="workspace">
@@ -19,6 +21,8 @@ function Workspace({
         onRemoveItem={onRemoveItem}
         onCancelPendingRemoval={onCancelPendingRemoval}
         solution={solution}
+        divideOperation={divideOperation}
+        onDivide={onDivide}
       />
       <ControlPanel
         setEquationState={setEquationState}

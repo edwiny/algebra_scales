@@ -3,7 +3,7 @@ import Workspace from './components/Workspace'
 import EquationDisplay from './components/EquationDisplay'
 import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
-import { checkVictoryCondition, calculateBalance } from './utils/balanceLogic'
+import { checkVictoryCondition, calculateBalance, canDivideBy } from './utils/balanceLogic'
 import { stateToEquation } from './utils/algebraParser'
 import { WEBSITE_NAME, WEBSITE_URL, SUPPORT_EMAIL } from './config/constants'
 import './App.css'
@@ -130,6 +130,51 @@ function App() {
   const handleCloseVictory = () => {
     setIsVictory(false)
   }
+
+  const handleDivide = () => {
+    if (!availableDivideOperation) return
+
+    const { divisor, sideWithUnknowns, sideWithValue } = availableDivideOperation
+
+    setEquationState((prev) => {
+      const newState = { ...prev }
+
+      // Reduce unknowns from divisor to 1
+      const unknowns = newState[sideWithUnknowns].filter(item => item.type === 'unknown')
+      const nonUnknowns = newState[sideWithUnknowns].filter(item => item.type !== 'unknown')
+      
+      // Keep one unknown and add back non-unknowns
+      newState[sideWithUnknowns] = [
+        { type: 'unknown', value: 1 },
+        ...nonUnknowns
+      ]
+
+      // Divide the other side's values by divisor
+      const otherSideItems = newState[sideWithValue].filter(item => item.type !== 'unknown')
+      const otherSideUnknowns = newState[sideWithValue].filter(item => item.type === 'unknown')
+      
+      // Calculate how many weights we need
+      const numWeights = otherSideItems.filter(item => item.type === 'weight').length
+      const numBalloons = otherSideItems.filter(item => item.type === 'balloon').length
+      
+      // New counts after division
+      const newNumWeights = Math.floor(numWeights / divisor)
+      const newNumBalloons = Math.floor(numBalloons / divisor)
+
+      newState[sideWithValue] = [
+        ...Array(newNumWeights).fill({ type: 'weight', value: 1 }),
+        ...Array(newNumBalloons).fill({ type: 'balloon', value: -1 }),
+        ...otherSideUnknowns
+      ]
+
+      return newState
+    })
+  }
+
+  // Calculate if division is possible
+  const availableDivideOperation = !pendingRemoval && !isVictory
+    ? canDivideBy(equationState.leftSide, equationState.rightSide)
+    : null
 
   const currentEquationIndex = equations.findIndex((eq) => eq.id === activeEquation.id)
   const currentStep = currentEquationIndex + 1
@@ -290,9 +335,9 @@ function App() {
         </div>
 
         <div className="progress-card" aria-label={`Equation ${currentStep} of ${totalSteps}`}>
-          <span className="progress-label">Equation</span>
+          <span className="progress-label">Progress</span>
           <strong>{currentStep} / {totalSteps}</strong>
-          <span className="progress-name">{activeEquation.name}</span>
+          
         </div>
       </header>
 
@@ -310,13 +355,10 @@ function App() {
               <div className="legend-items">
                 <span className="legend-pill legend-weight">Weight = +1</span>
                 <span className="legend-pill legend-balloon">Balloon = -1</span>
-                <span className="legend-pill legend-unknown">Triangle = x</span>
+                <span className="legend-pill legend-unknown">Unknown = x</span>
               </div>
             </div>
-
-            <p className="micro-tip">
-              Tip: remove matching items from both sides until x is by itself.
-            </p>
+           
           </section>
 
           <EquationDisplay equationState={equationState} solution={activeEquation.solution} />
@@ -328,6 +370,8 @@ function App() {
             onRemoveItem={handleRemoveItem}
             onCancelPendingRemoval={handleCancelPendingRemoval}
             solution={activeEquation.solution}
+            divideOperation={availableDivideOperation}
+            onDivide={handleDivide}
           />
 
           <div className="reset-section">

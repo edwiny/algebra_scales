@@ -125,3 +125,75 @@ export function checkVictoryCondition(leftSide, rightSide, expectedSolution) {
   // Check if calculated value matches expected solution
   return calculatedX === expectedSolution
 }
+
+/**
+ * Check if division can be performed on the equation without resulting in fractions
+ * Division is valid when:
+ * 1. There's more than one unknown (x coefficient > 1) on one side
+ * 2. The other side can be evenly divided by the coefficient
+ * 3. There are no balloons (negative values complicate the visual model)
+ * 4. The side with unknowns has ONLY unknowns (no mixed weights/balloons)
+ *    This ensures x is "ready" for division - no additional terms on x's side
+ * 
+ * @param {Array} leftSide - Items on left side
+ * @param {Array} rightSide - Items on right side
+ * @returns {Object|null} Object with division info if valid, null otherwise
+ */
+export function canDivideBy(leftSide, rightSide) {
+  const leftUnknowns = countItemsByType(leftSide, 'unknown')
+  const rightUnknowns = countItemsByType(rightSide, 'unknown')
+  const leftWeights = countItemsByType(leftSide, 'weight')
+  const rightWeights = countItemsByType(rightSide, 'weight')
+  const leftBalloons = countItemsByType(leftSide, 'balloon')
+  const rightBalloons = countItemsByType(rightSide, 'balloon')
+
+  // Need exactly one side to have unknowns for division to make sense
+  // (the coefficient we're dividing by)
+  if (leftUnknowns > 1 && rightUnknowns === 0) {
+    // Division by leftUnknowns: 
+    // - Left side must have ONLY unknowns (no weights or balloons mixed with x)
+    // - Right side must have only weights/balloons (no unknowns)
+    if (leftWeights === 0 && leftBalloons === 0 && rightUnknowns === 0) {
+      const divisor = leftUnknowns
+      const rightSideValue = calculateSideValue(rightSide)
+      
+      // Check if right side can be evenly divided
+      if (rightSideValue % divisor === 0 && rightSideValue !== 0) {
+        // Also check there's no balloons on either side
+        if (leftBalloons === 0 && rightBalloons === 0) {
+          return {
+            divisor,
+            sideWithUnknowns: 'leftSide',
+            sideWithValue: 'rightSide',
+            originalRightValue: rightSideValue,
+            newRightValue: rightSideValue / divisor,
+          }
+        }
+      }
+    }
+  } else if (rightUnknowns > 1 && leftUnknowns === 0) {
+    // Division by rightUnknowns:
+    // - Right side must have ONLY unknowns (no weights or balloons mixed with x)
+    // - Left side must have only weights/balloons (no unknowns)
+    if (rightWeights === 0 && rightBalloons === 0 && leftUnknowns === 0) {
+      const divisor = rightUnknowns
+      const leftSideValue = calculateSideValue(leftSide)
+      
+      // Check if left side can be evenly divided
+      if (leftSideValue % divisor === 0 && leftSideValue !== 0) {
+        // Also check there's no balloons on either side
+        if (leftBalloons === 0 && rightBalloons === 0) {
+          return {
+            divisor,
+            sideWithUnknowns: 'rightSide',
+            sideWithValue: 'leftSide',
+            originalLeftValue: leftSideValue,
+            newLeftValue: leftSideValue / divisor,
+          }
+        }
+      }
+    }
+  }
+
+  return null
+}
