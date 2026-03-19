@@ -1,5 +1,6 @@
 import Scale from './Scale'
 import ControlPanel from './ControlPanel'
+import EquationDisplay from './EquationDisplay'
 import './Workspace.css'
 
 function Workspace({
@@ -11,6 +12,11 @@ function Workspace({
   onCancelPendingRemoval,
   divideOperation,
   onDivide,
+  isVictory,
+  onNextEquation,
+  hasNextEquation,
+  currentEquationIndex,
+  equations,
 }) {
   return (
     <div className="workspace">
@@ -24,6 +30,15 @@ function Workspace({
         divideOperation={divideOperation}
         onDivide={onDivide}
       />
+      
+      <EquationDisplay 
+        equationState={equationState} 
+        solution={solution}
+        isSolved={isVictory}
+        onNextEquation={onNextEquation}
+        hasNextEquation={hasNextEquation}
+      />
+
       <ControlPanel
         setEquationState={setEquationState}
         isLocked={Boolean(pendingRemoval)}

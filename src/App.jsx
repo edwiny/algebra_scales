@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Workspace from './components/Workspace'
-import EquationDisplay from './components/EquationDisplay'
 import VictoryModal from './components/VictoryModal'
 import { getDefaultEquation, equations } from './data/equations'
 import { checkVictoryCondition, calculateBalance, canDivideBy } from './utils/balanceLogic'
@@ -345,29 +344,11 @@ function App() {
         <main className="app-main">
           <section className="intro-card" aria-label="How the algebra model works">
             <div className="intro-header">
-              <span className="intro-label">Current challenge</span>
+              <span className="intro-label">Step 1 — Current challenge</span>
               <p className="intro-title">{activeEquation.name}</p>
               <p className="intro-subtitle">{activeEquation.description}</p>
             </div>
-
-            <div className="legend-card">
-              <span className="legend-title">Legend</span>
-              <div className="legend-items">
-                <span className="legend-pill legend-weight">Weight = +1</span>
-                <span className="legend-pill legend-balloon">Balloon = -1</span>
-                <span className="legend-pill legend-unknown">Unknown = x</span>
-              </div>
-            </div>
-           
           </section>
-
-            <EquationDisplay 
-              equationState={equationState} 
-              solution={activeEquation.solution}
-              isSolved={isVictory}
-              onNextEquation={handleNextEquation}
-              hasNextEquation={currentEquationIndex < equations.length - 1}
-            />
 
           <Workspace
             equationState={equationState}
@@ -378,9 +359,22 @@ function App() {
             solution={activeEquation.solution}
             divideOperation={availableDivideOperation}
             onDivide={handleDivide}
+            isVictory={isVictory}
+            onNextEquation={handleNextEquation}
+            hasNextEquation={currentEquationIndex < equations.length - 1}
+            currentEquationIndex={currentEquationIndex}
+            equations={equations}
           />
 
           <div className="reset-section">
+            <div className="footer-legend">
+              <span className="legend-title">Legend</span>
+              <div className="legend-items">
+                <span className="legend-pill legend-weight">Weight = +1</span>
+                <span className="legend-pill legend-balloon">Balloon = -1</span>
+                <span className="legend-pill legend-unknown">Unknown = x</span>
+              </div>
+            </div>
             <button
               onClick={handleReset}
               className="reset-button"

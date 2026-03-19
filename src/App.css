@@ -102,39 +102,7 @@
 }
 
 .legend-card {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.legend-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.legend-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.25rem;
-  padding: 0.45rem 0.8rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.legend-weight {
-  background: #d9ebff;
-  color: #22598a;
-}
-
-.legend-balloon {
-  background: #ffe0dd;
-  color: #9b3d34;
-}
-
-.legend-unknown {
-  background: #ffe6b8;
-  color: #8d5b00;
+  display: none;
 }
 
 .micro-tip {
@@ -144,8 +112,56 @@
 
 .reset-section {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   padding-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-legend .legend-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.footer-legend .legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-legend .legend-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.footer-legend .legend-weight {
+  background: #d9ebff;
+  color: #22598a;
+}
+
+.footer-legend .legend-balloon {
+  background: #ffe0dd;
+  color: #9b3d34;
+}
+
+.footer-legend .legend-unknown {
+  background: #ffe6b8;
+  color: #8d5b00;
 }
 
 .reset-button {

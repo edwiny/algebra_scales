@@ -9,6 +9,54 @@
   box-shadow: var(--shadow-soft);
 }
 
+.workspace-legend {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+}
+
+.legend-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.legend-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.legend-weight {
+  background: #d9ebff;
+  color: #22598a;
+}
+
+.legend-balloon {
+  background: #ffe0dd;
+  color: #9b3d34;
+}
+
+.legend-unknown {
+  background: #ffe6b8;
+  color: #8d5b00;
+}
+
 @media (min-width: 900px) {
   .workspace {
     grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.95fr);

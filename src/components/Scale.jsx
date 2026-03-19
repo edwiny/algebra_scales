@@ -74,8 +74,6 @@ function Scale({
     >
       <div className="scale-topper">
         <div>
-          <p className="balance-indicator">Goal: get x by itself on one side.</p>
-          <p className="scale-instruction">Tap the small remove button under an item to take one away.</p>
           {pendingMessage && (
             <div className="pending-removal-banner" role="status" aria-live="polite">
               <span>{pendingMessage}</span>
