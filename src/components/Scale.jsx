@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { calculateBalance } from '../utils/balanceLogic'
 import confetti from 'canvas-confetti'
 import Weight from './Weight'
@@ -28,10 +28,17 @@ function Scale({
   const pendingSide = pendingRemoval?.fromSide
   const requiredType = pendingRemoval?.type
   const targetSide = pendingSide === 'leftSide' ? 'rightSide' : 'leftSide'
+  const [wobble, setWobble] = useState(null)
 
   const comparisonOperator = balance === 0 ? '=' : balance > 0 ? '<' : '>'
   const tickRef = useRef(null)
   const prevIsSolvedRef = useRef(false)
+
+  const handlePanClick = (side) => {
+    if (isPending) return
+    setWobble(side)
+    setTimeout(() => setWobble(null), 500)
+  }
 
   // Trigger confetti from the tick mark position when equation transitions to solved
   useEffect(() => {
@@ -112,7 +119,7 @@ function Scale({
     >
       {/* Header with equation label and solved feedback */}
       <div className="scale-header">
-        <div className="equation-label">Current equation</div>
+        <div className="equation-label">Step 2 — solve the equation</div>
         {isSolved && (
           <div className="equation-solved-feedback">
             <div className="solved-tick" ref={tickRef} aria-hidden="true">
@@ -158,8 +165,12 @@ function Scale({
 
       <div className="scale-sides">
         <section
-          className={`scale-side left-side ${heavierSide === 'left' ? 'scale-side-heavy' : ''}`}
+          className={`scale-side left-side ${heavierSide === 'left' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
           aria-label="Left side of the scale"
+          onClick={() => handlePanClick('left')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && handlePanClick('left')}
         >
           <div className="side-heading">
             <div>
@@ -204,8 +215,12 @@ function Scale({
         </div>
 
         <section
-          className={`scale-side right-side ${heavierSide === 'right' ? 'scale-side-heavy' : ''}`}
+          className={`scale-side right-side ${heavierSide === 'right' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
           aria-label="Right side of the scale"
+          onClick={() => handlePanClick('right')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && handlePanClick('right')}
         >
           <div className="side-heading">
             <div>

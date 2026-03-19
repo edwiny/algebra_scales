@@ -156,6 +156,41 @@
   border: 1px solid rgba(124, 98, 88, 0.12);
   border-radius: 1.35rem;
   transition: box-shadow 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+}
+
+.scale-side:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.scale-side:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Bounce animation - up/down movement */
+@keyframes bounce-left {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-6px); }
+  50% { transform: translateY(4px); }
+  75% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes bounce-right {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(6px); }
+  50% { transform: translateY(-4px); }
+  75% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
+
+.scale-side-wobble {
+  animation: bounce-left 0.5s ease-in-out;
+}
+
+.right-side.scale-side-wobble {
+  animation: bounce-right 0.5s ease-in-out;
 }
 
 .left-side {
