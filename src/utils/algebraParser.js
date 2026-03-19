@@ -7,7 +7,7 @@
  * @param {Array} items - Items on one side
  * @returns {string} Algebraic expression
  */
-function sideToExpression(items) {
+export function sideToExpression(items) {
   if (items.length === 0) return '0'
 
   // Aggregate items by type and sum their values

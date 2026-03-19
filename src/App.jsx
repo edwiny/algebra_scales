@@ -72,6 +72,15 @@ function App() {
     }
   }
 
+  const handlePreviousEquation = () => {
+    const currentIndex = equations.findIndex((eq) => eq.id === activeEquation.id)
+    if (currentIndex > 0) {
+      const prevEquation = equations[currentIndex - 1]
+      setActiveEquation(prevEquation)
+      initializeEquation(prevEquation)
+    }
+  }
+
   const handleRemoveItem = (side, index, item) => {
     const otherSide = side === 'leftSide' ? 'rightSide' : 'leftSide'
     const hasMatchingItem = equationState[otherSide].some(
@@ -202,7 +211,7 @@ function App() {
         {
           title: 'Intellectual Property',
           body: [
-            'The pedagogical concepts used in explanations are not claimed as proprietory. All other content, code, and visual design on MathSlay is © 2026 MathSlay.',
+            'The pedagogical concepts used in explanations are not claimed as proprietory. All other content, code, and visual design on Algebra Scales is © 2026 Algebra Scales.',
           ],
         },
         {
@@ -329,7 +338,7 @@ function App() {
           <p className="eyebrow">visual algebra solver</p>
           <h1>{WEBSITE_NAME}</h1>
           <p className="app-subtitle">
-            Slay at math
+            Learn algebra with visual scales — for free.
           </p>
         </div>
 
@@ -375,13 +384,24 @@ function App() {
                 <span className="legend-pill legend-unknown">Unknown = x</span>
               </div>
             </div>
-            <button
-              onClick={handleReset}
-              className="reset-button"
-              aria-label="Reset the current equation to its initial state"
-            >
-              Start Over
-            </button>
+            <div className="reset-buttons">
+              {currentEquationIndex > 0 && (
+                <button
+                  onClick={handlePreviousEquation}
+                  className="reset-button previous-button"
+                  aria-label="Go to the previous equation"
+                >
+                  Previous
+                </button>
+              )}
+              <button
+                onClick={handleReset}
+                className="reset-button"
+                aria-label="Reset the current equation to its initial state"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </main>
       ) : (

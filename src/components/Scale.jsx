@@ -1,24 +1,62 @@
+import { useEffect, useRef } from 'react'
 import { calculateBalance } from '../utils/balanceLogic'
+import confetti from 'canvas-confetti'
 import Weight from './Weight'
 import Balloon from './Balloon'
+import LeftTerm from './LeftTerm'
+import RightTerm from './RightTerm'
+import Comparator from './Comparator'
 import './Scale.css'
+import './EquationTerm.css'
 
 function Scale({
   leftSide,
   rightSide,
-  setEquationState,
   solution,
   pendingRemoval,
   onRemoveItem,
   onCancelPendingRemoval,
   divideOperation,
   onDivide,
+  equationState,
+  isSolved,
+  onNextEquation,
+  hasNextEquation,
 }) {
   const balance = calculateBalance(leftSide, rightSide, solution)
   const isPending = Boolean(pendingRemoval)
   const pendingSide = pendingRemoval?.fromSide
   const requiredType = pendingRemoval?.type
   const targetSide = pendingSide === 'leftSide' ? 'rightSide' : 'leftSide'
+
+  const comparisonOperator = balance === 0 ? '=' : balance > 0 ? '<' : '>'
+  const tickRef = useRef(null)
+  const prevIsSolvedRef = useRef(false)
+
+  // Trigger confetti from the tick mark position when equation transitions to solved
+  useEffect(() => {
+    if (isSolved && !prevIsSolvedRef.current && tickRef.current) {
+      const prefersReducedMotion = typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      if (!prefersReducedMotion) {
+        const rect = tickRef.current.getBoundingClientRect()
+        const x = rect.left / window.innerWidth
+        const y = rect.top / window.innerHeight
+
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          startVelocity: 30,
+          origin: { x, y },
+          colors: ['#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B']
+        })
+      }
+    }
+    
+    prevIsSolvedRef.current = isSolved
+  }, [isSolved])
 
   const handleRemove = (side, indexToRemove, item) => {
     if (isPending) {
@@ -69,9 +107,38 @@ function Scale({
 
   return (
     <section
-      className={`scale-container ${isPending ? 'scale-container-locked' : ''}`}
+      className={`scale-container ${isPending ? 'scale-container-locked' : ''} ${isSolved ? 'equation-solved' : ''}`}
       aria-label="Balance scale workspace"
     >
+      {/* Header with equation label and solved feedback */}
+      <div className="scale-header">
+        <div className="equation-label">Current equation</div>
+        {isSolved && (
+          <div className="equation-solved-feedback">
+            <div className="solved-tick" ref={tickRef} aria-hidden="true">
+              ✓
+            </div>
+            {hasNextEquation && onNextEquation && (
+              <button 
+                className="next-equation-btn"
+                onClick={onNextEquation}
+                aria-label="Move to the next equation"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Top row: Equation terms */}
+      <div className="equation-row">
+        <LeftTerm items={equationState?.leftSide || leftSide} />
+        <Comparator operator={comparisonOperator} />
+        <RightTerm items={equationState?.rightSide || rightSide} />
+      </div>
+
+      {/* Bottom row: Scale */}
       <div className="scale-topper">
         <div>
           {pendingMessage && (
@@ -87,7 +154,6 @@ function Scale({
             </div>
           )}
         </div>
-
       </div>
 
       <div className="scale-sides">
@@ -199,11 +265,3 @@ function Scale({
 }
 
 export default Scale
-
-
-
-
-
-
-
-

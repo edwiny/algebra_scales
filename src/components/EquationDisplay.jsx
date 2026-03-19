@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import confetti from 'canvas-confetti'
-import { stateToEquation } from '../utils/algebraParser'
 import { calculateBalance } from '../utils/balanceLogic'
-import './EquationDisplay.css'
+import LeftTerm from './LeftTerm'
+import RightTerm from './RightTerm'
+import Comparator from './Comparator'
+import './EquationTerm.css'
 
 function EquationDisplay({ equationState, solution = null, isSolved = false, onNextEquation = null, hasNextEquation = false }) {
   const balance = calculateBalance(equationState.leftSide, equationState.rightSide, solution)
   const comparisonOperator = balance === 0 ? '=' : balance > 0 ? '<' : '>'
-  const equation = stateToEquation(equationState, comparisonOperator)
   const tickRef = useRef(null)
   const prevIsSolvedRef = useRef(false)
 
@@ -40,10 +41,8 @@ function EquationDisplay({ equationState, solution = null, isSolved = false, onN
 
   return (
     <section className={`equation-display ${isSolved ? 'equation-solved' : ''}`} aria-label="Current algebra equation">
-      <div className="equation-label">Current equation</div>
-      <div className="equation-content">
-        <div className="equation-text">{equation || 'No equation yet'}</div>
-        
+      <div className="equation-header">
+        <div className="equation-label">Current equation</div>
         {isSolved && (
           <div className="equation-solved-feedback">
             <div className="solved-tick" ref={tickRef} aria-hidden="true">
@@ -61,9 +60,13 @@ function EquationDisplay({ equationState, solution = null, isSolved = false, onN
           </div>
         )}
       </div>
+      <div className="equation-content">
+        <LeftTerm items={equationState.leftSide} />
+        <Comparator operator={comparisonOperator} />
+        <RightTerm items={equationState.rightSide} />
+      </div>
     </section>
   )
 }
 
 export default EquationDisplay
-

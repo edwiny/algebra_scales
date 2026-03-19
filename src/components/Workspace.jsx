@@ -1,6 +1,5 @@
 import Scale from './Scale'
 import ControlPanel from './ControlPanel'
-import EquationDisplay from './EquationDisplay'
 import './Workspace.css'
 
 function Workspace({
@@ -29,11 +28,7 @@ function Workspace({
         solution={solution}
         divideOperation={divideOperation}
         onDivide={onDivide}
-      />
-      
-      <EquationDisplay 
-        equationState={equationState} 
-        solution={solution}
+        equationState={equationState}
         isSolved={isVictory}
         onNextEquation={onNextEquation}
         hasNextEquation={hasNextEquation}
