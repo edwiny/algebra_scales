@@ -66,14 +66,24 @@
   outline-offset: 2px;
 }
 
-/* Equation row - top row of cards */
-.equation-row {
-  display: flex;
+/* 2-col 3-row grid (mobile) — each pan paired with its equation term */
+.scale-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "left-pan   left-term"
+    "fulcrum    comparator"
+    "right-pan  right-term";
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
 }
+
+.scale-left-pan   { grid-area: left-pan; }
+.scale-left-term  { grid-area: left-term; }
+.scale-fulcrum    { grid-area: fulcrum; }
+.scale-comparator { grid-area: comparator; }
+.scale-right-pan  { grid-area: right-pan; }
+.scale-right-term { grid-area: right-term; }
 
 .scale-topper {
   display: grid;
@@ -143,10 +153,6 @@
 
 
 
-.scale-sides {
-  display: grid;
-  gap: 0.85rem;
-}
 
 .scale-side {
   display: grid;
@@ -359,9 +365,12 @@
     align-items: start;
   }
 
-  .scale-sides {
+  /* 3-col 2-row layout on desktop: equation row on top, scale row below */
+  .scale-grid {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
+    grid-template-areas:
+      "left-term  comparator right-term"
+      "left-pan   fulcrum    right-pan";
   }
 }
 

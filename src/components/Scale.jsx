@@ -138,14 +138,7 @@ function Scale({
         )}
       </div>
 
-      {/* Top row: Equation terms */}
-      <div className="equation-row">
-        <LeftTerm items={equationState?.leftSide || leftSide} />
-        <Comparator operator={comparisonOperator} />
-        <RightTerm items={equationState?.rightSide || rightSide} />
-      </div>
-
-      {/* Bottom row: Scale */}
+      {/* Pending removal banner */}
       <div className="scale-topper">
         <div>
           {pendingMessage && (
@@ -163,9 +156,10 @@ function Scale({
         </div>
       </div>
 
-      <div className="scale-sides">
+      {/* 2×3 mobile / 3×2 desktop grid: pairs each pan with its equation term */}
+      <div className="scale-grid">
         <section
-          className={`scale-side left-side ${heavierSide === 'left' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
+          className={`scale-left-pan scale-side left-side ${heavierSide === 'left' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
           aria-label="Left side of the scale"
           onClick={() => handlePanClick('left')}
           role="button"
@@ -209,13 +203,21 @@ function Scale({
           </div>
         </section>
 
-        <div className="fulcrum" aria-hidden="true">
+        <div className="scale-left-term">
+          <LeftTerm items={equationState?.leftSide || leftSide} />
+        </div>
+
+        <div className="scale-fulcrum fulcrum" aria-hidden="true">
           <div className="beam" style={{ transform: `rotate(${Math.max(-12, Math.min(12, balance * 5))}deg)` }} />
           <div className="pivot"></div>
         </div>
 
+        <div className="scale-comparator">
+          <Comparator operator={comparisonOperator} />
+        </div>
+
         <section
-          className={`scale-side right-side ${heavierSide === 'right' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
+          className={`scale-right-pan scale-side right-side ${heavierSide === 'right' ? 'scale-side-heavy' : ''} ${wobble ? 'scale-side-wobble' : ''}`}
           aria-label="Right side of the scale"
           onClick={() => handlePanClick('right')}
           role="button"
@@ -258,6 +260,10 @@ function Scale({
             })}
           </div>
         </section>
+
+        <div className="scale-right-term">
+          <RightTerm items={equationState?.rightSide || rightSide} />
+        </div>
       </div>
 
       {divideOperation && (
