@@ -40,23 +40,19 @@ function Scale({
     setTimeout(() => setWobble(null), 500)
   }
 
-  // Trigger confetti from the tick mark position when equation transitions to solved
+  // Trigger confetti from screen center when equation transitions to solved
   useEffect(() => {
-    if (isSolved && !prevIsSolvedRef.current && tickRef.current) {
+    if (isSolved && !prevIsSolvedRef.current) {
       const prefersReducedMotion = typeof window !== 'undefined' &&
         window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
       if (!prefersReducedMotion) {
-        const rect = tickRef.current.getBoundingClientRect()
-        const x = rect.left / window.innerWidth
-        const y = rect.top / window.innerHeight
-
         confetti({
           particleCount: 80,
           spread: 70,
           startVelocity: 30,
-          origin: { x, y },
+          origin: { x: 0.5, y: 0.5 },
           colors: ['#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B']
         })
       }

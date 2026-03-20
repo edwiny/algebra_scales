@@ -60,7 +60,7 @@ function ControlPanel({ setEquationState, isLocked }) {
                 aria-label={`Add ${control.key} to left side`}
                 disabled={isLocked}
               >
-                Add to left
+                Add left
               </button>
               <button
                 type="button"
@@ -69,7 +69,7 @@ function ControlPanel({ setEquationState, isLocked }) {
                 aria-label={`Add ${control.key} to right side`}
                 disabled={isLocked}
               >
-                Add to right
+                Add right
               </button>
             </div>
           </section>
